@@ -14,7 +14,7 @@ public class MsgHistoryActivity extends Activity {
 		setContentView(R.layout.msg_history);
 
 		list = (ListView) findViewById(R.id.list);
-		MsgAdapter adapter = new MsgAdapter(MsgHistoryActivity.this);
+		MessageAdapter adapter = new MessageAdapter(MsgHistoryActivity.this);
 		list.setAdapter(adapter);
 	}
 }

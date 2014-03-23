@@ -1,5 +1,16 @@
 <resources>
 
     <string name="app_name">SmartHome</string>
+    <string name="dad">老爸</string>
+    <string name="mum">老妈</string>
+    <string name="daughter">女儿</string>
+    <string name="son">儿子</string>
+    <string name="wife">老婆</string>
+    <string name="husband">老公</string>
 
+    <string name="company">公司</string>
+    <string name="park">游乐场</string>
+    <string name="market">菜市场</string>
+    <string name="school">学校</string>
+    <string name="home">家</string>
 </resources>

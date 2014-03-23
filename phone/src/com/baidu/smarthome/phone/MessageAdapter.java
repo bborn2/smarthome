@@ -11,12 +11,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MsgAdapter extends BaseAdapter {
+public class MessageAdapter extends BaseAdapter {
 
 	private List<Talk> mTalkList;
 	private Context mContext;
 
-	public MsgAdapter(Context context) {
+	public MessageAdapter(Context context) {
 		super();
 		init();
 		mContext = context;
