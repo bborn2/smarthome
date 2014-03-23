@@ -57,7 +57,7 @@ public class MemberAdapter extends BaseAdapter {
 		nameTextView.setText(name);
 		
 		ImageView photo = (ImageView) convertView.findViewById(R.id.avatar);
-		photo.setImageResource(R.drawable.mama);
+		photo.setImageResource(mPeopleList.get(position).getAvatarid());
 		
 		ImageView mask = (ImageView) convertView.findViewById(R.id.mask);
 		if (mPeopleList.get(position).getAthome()) {

@@ -22,14 +22,14 @@
         android:orientation="horizontal" >
 
        <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/msgedit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:ems="10" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

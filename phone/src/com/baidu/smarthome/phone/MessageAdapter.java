@@ -11,14 +11,42 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.smarthome.phone.dao.DaoSession;
+import com.baidu.smarthome.phone.dao.Member;
+import com.baidu.smarthome.phone.dao.MemberDao;
+import com.baidu.smarthome.phone.dao.MemberDao.Properties;
+import com.baidu.smarthome.phone.dao.Message;
+import com.baidu.smarthome.phone.dao.MessageDao;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
 public class MessageAdapter extends BaseAdapter {
 
-	private List<Talk> mTalkList;
+	private List<Message> mTalkList;
 	private Context mContext;
+	
+	DaoSession mDaoSession;
+	MessageDao mMessageDao;
+	MemberDao mMemberDao;
+	Member mPeerMember;
+	
+	private long mPeerId;
 
-	public MessageAdapter(Context context) {
+	public MessageAdapter(Context context, long peerId) {
 		super();
-		init();
+		mPeerId = peerId;
+		mDaoSession = SmartHomeApplication.getDaoMaster().newSession();
+        mMessageDao = mDaoSession.getMessageDao();
+        mMemberDao = mDaoSession.getMemberDao();
+        QueryBuilder<Member> qb = mMemberDao.queryBuilder();
+        qb.where(Properties.Id.eq(mPeerId));
+        List<Member> result = qb.list();
+        if (null != result && !result.isEmpty()) {
+        	mPeerMember = result.get(0);
+        	mTalkList = result.get(0).getMessagelist();
+        } else {
+        	mTalkList = new ArrayList<Message>();
+        }
 		mContext = context;
 	}
 
@@ -28,9 +56,13 @@ public class MessageAdapter extends BaseAdapter {
 		return mTalkList.size();
 	}
 
-	public void setList(List<Talk> talkList) {
-		// TODO Auto-generated method stub
-		this.mTalkList = talkList;
+	public void intertMessage(Message msg) {
+		mTalkList = mPeerMember.getMessagelist();
+		msg.setPeerid(mPeerId);
+		mDaoSession.insert(msg);
+		mTalkList.add(msg);
+		
+		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -48,7 +80,7 @@ public class MessageAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		Talk talk = mTalkList.get(position);
+		Message msg = mTalkList.get(position);
 		if (convertView == null) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
 
@@ -57,12 +89,12 @@ public class MessageAdapter extends BaseAdapter {
 		}
 		TextView text = (TextView) convertView.findViewById(R.id.talk);
 
-		text.setText(talk.text);
+		text.setText(msg.getCotent());
 		LinearLayout parent1 = (LinearLayout) convertView
 				.findViewById(R.id.parent1);
 		LinearLayout parent2 = (LinearLayout) convertView
 				.findViewById(R.id.parent2);
-		if (talk.isLeft) {
+		if (msg.getPeermsg()) {
 
 			text.setBackgroundResource(R.drawable.bg_recieved_msg);
 			parent1.setGravity(android.view.Gravity.LEFT);
@@ -74,31 +106,5 @@ public class MessageAdapter extends BaseAdapter {
 			parent2.setGravity(android.view.Gravity.RIGHT);
 		}
 		return convertView;
-	}
-
-	class Talk {
-		String text = "";
-		boolean isLeft = false;
-
-	}
-
-	void init() {
-		mTalkList = new ArrayList<Talk>();
-		String str = "xxx";
-		for (int i = 0; i < 10; i++) {
-			if (i > 5) {
-				str = "xxx";
-			}
-			str = str + str;
-			Talk talk = new Talk();
-			if (i % 2 == 0) {
-
-				talk.isLeft = true;
-				talk.text = "left" + str;
-			} else {
-				talk.text = "right" + str;
-			}
-			mTalkList.add(talk);
-		}
 	}
 }

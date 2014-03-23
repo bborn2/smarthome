@@ -14,7 +14,8 @@ import com.baidu.smarthome.phone.dao.Member;
 import com.baidu.smarthome.phone.dao.MemberDao;
 
 public class MainActivity extends Activity {
-	ListView list;
+	ListView mListView;
+	MemberAdapter mAdapter;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -24,16 +25,18 @@ public class MainActivity extends Activity {
 
 		setupDB();
 
-		list = (ListView) findViewById(R.id.list);
+		mListView = (ListView) findViewById(R.id.list);
 
-		MemberAdapter adapter = new MemberAdapter(this);
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(new OnItemClickListener() {
+		mAdapter = new MemberAdapter(this);
+		mListView.setAdapter(mAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				Intent intent = new Intent(MainActivity.this,
 						com.baidu.smarthome.phone.MsgHistoryActivity.class);
+				long peerid = ((Member)mAdapter.getItem(arg2)).getId();
+				intent.putExtra("peerid", peerid);
 				startActivity(intent);
 			}
 		});
